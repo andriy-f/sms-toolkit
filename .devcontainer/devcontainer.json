@@ -6,6 +6,14 @@
 	"dockerFile": "./Dockerfile",
 	"runArgs": [
 		"--userns=keep-id:uid=1000,gid=1000"
+	],
+	// Create folder on your local system for pnpm store and set env var $MY_PNPM_STORE_PATH to that folder's path
+	"mounts": [
+		{
+			"source": "${localEnv:MY_PNPM_STORE_PATH}",
+			"target": "${containerWorkspaceFolder}/.pnpm-store",
+			"type": "bind"
+		}
 	]
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},

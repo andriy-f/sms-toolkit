@@ -3,19 +3,26 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --border: #292424;
 }
 
+/* stylelint-disable at-rule-no-unknown */
 @theme inline {
+  --color-border: var(--border);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-body1: var(--font-geist-avenir);
 }
+
+/* stylelint-enable at-rule-no-unknown */
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --border: #615c5c;
   }
 }
 

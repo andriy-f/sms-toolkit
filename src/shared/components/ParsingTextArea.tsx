@@ -1,40 +1,38 @@
 import React from 'react';
 import STTextArea from './STTextArea';
-import { filterEmptyLines, groupLinesByPattern, splitIntoLines, trimLines } from '../string-utils';
-
-type ParseRes = {
-	matches: string[];
-	nonMatches: string[];
-}
+import pipe from 'ramda/src/pipe';
+import { filterEmptyLines, GroupedMatchResult, groupLinesByPattern, splitIntoLines, trimLines } from '../string-utils';
+import { useDebouncedCallback } from 'use-debounce';
 
 type ParsingTextAreaProps = {
-	pattern: string;
-	onChange: (parseRes: ParseRes) => void;
+	pattern: RegExp;
+	placeholder?: string;
+	onChange: (parseRes: GroupedMatchResult) => void;
 };
 
-const ParsingTextArea: React.FC<ParsingTextAreaProps> = ({ pattern, onChange }) => {
+const parseInput = (pattern: RegExp) => pipe(
+	splitIntoLines,
+	trimLines,
+	filterEmptyLines,
+	groupLinesByPattern(pattern)
+);
 
-	const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+const ParsingTextArea: React.FC<ParsingTextAreaProps> = ({ pattern, onChange, placeholder }) => {
+
+	const handleChange = useDebouncedCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		const newValue = e.target.value;
-		const res = groupLinesByPattern(
-			filterEmptyLines(
-				trimLines(
-					splitIntoLines(newValue)
-				)
-			),
-			new RegExp(pattern)
-		);
+		const res = parseInput(pattern)(newValue);
 		onChange(res);
-	};
+	}, 500);
 
 	return (
 		<div>
 			<label>
-				Pattern: <code>{pattern}</code>
+				Pattern: <code>{pattern.source}</code>
 			</label>
 			<STTextArea
 				onChange={handleChange}
-				placeholder={`Enter text matching pattern: ${pattern}`}
+				placeholder={placeholder}
 			/>
 		</div>
 	);

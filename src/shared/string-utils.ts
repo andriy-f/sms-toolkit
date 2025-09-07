@@ -10,17 +10,20 @@ export const filterEmptyLines = (lines: string[]): string[] => {
 	return lines.filter(line => line.length > 0);
 };
 
-export const groupLinesByPattern = (lines: string[], pattern: RegExp): { matches: string[]; nonMatches: string[] } => {
-	const matches: string[] = [];
-	const nonMatches: string[] = [];
+export type GroupedMatchResult = {
+	matches: string[];
+	nonMatches: string[];
+};
 
-	lines.forEach(line => {
+export const groupLinesByPattern = (pattern: RegExp) => (lines: string[]): GroupedMatchResult => {
+	const initialValue: GroupedMatchResult = { matches: [], nonMatches: [] };
+
+	return lines.reduce((acc, line) => {
 		if (pattern.test(line)) {
-			matches.push(line);
+			acc.matches.push(line);
 		} else {
-			nonMatches.push(line);
+			acc.nonMatches.push(line);
 		}
-	});
-
-	return { matches, nonMatches };
-}
+		return acc;
+	}, initialValue);
+};

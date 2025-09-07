@@ -10,13 +10,16 @@
   },
   "dependencies": {
     "next": "15.5.2",
+    "ramda": "^0.31.3",
     "react": "19.1.1",
-    "react-dom": "19.1.1"
+    "react-dom": "19.1.1",
+    "use-debounce": "^10.0.6"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/ramda": "^0.31.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

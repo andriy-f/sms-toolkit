@@ -5,31 +5,26 @@ import { filterEmptyLines, GroupedMatchResult, groupLinesByPattern, splitIntoLin
 import { useDebouncedCallback } from 'use-debounce';
 
 type ParsingTextAreaProps = {
-	pattern: RegExp;
 	placeholder?: string;
-	onChange: (parseRes: GroupedMatchResult) => void;
+	onChange: (parseRes: string[]) => void;
 };
 
-const parseInput = (pattern: RegExp) => pipe(
+const parseInput = pipe(
 	splitIntoLines,
 	trimLines,
 	filterEmptyLines,
-	groupLinesByPattern(pattern)
 );
 
-const ParsingTextArea: React.FC<ParsingTextAreaProps> = ({ pattern, onChange, placeholder }) => {
+const ParsingTextArea: React.FC<ParsingTextAreaProps> = ({ onChange, placeholder }) => {
 
 	const handleChange = useDebouncedCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		const newValue = e.target.value;
-		const res = parseInput(pattern)(newValue);
+		const res = parseInput(newValue);
 		onChange(res);
 	}, 500);
 
 	return (
 		<div>
-			<label>
-				Pattern: <code>{pattern.source}</code>
-			</label>
 			<STTextArea
 				onChange={handleChange}
 				placeholder={placeholder}

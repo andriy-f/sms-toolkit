@@ -5,3 +5,5 @@ export const H2: React.FC<React.PropsWithChildren> = ({ children, }) => {
 		</h2>
 	);
 };
+
+export default H2;

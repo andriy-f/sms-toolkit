@@ -1,6 +1,6 @@
-import ImportPhonesComponent from "@/features/ImportPhonesComponent";
 import Image from "next/image";
 import { Suspense } from "react";
+import Wizard from "../features/Wizard";
 
 export default function Home() {
   return (
@@ -55,7 +55,7 @@ export default function Home() {
         <Suspense
           fallback={<div className="text-sm text-gray-500">Loading...</div>}
         >
-          <ImportPhonesComponent />
+          <Wizard />
         </Suspense>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">

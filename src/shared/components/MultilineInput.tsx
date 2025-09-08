@@ -1,7 +1,7 @@
 import React from 'react';
 import STTextArea from './STTextArea';
 import pipe from 'ramda/src/pipe';
-import { filterEmptyLines, GroupedMatchResult, groupLinesByPattern, splitIntoLines, trimLines } from '../string-utils';
+import { deduplicateLines, filterEmptyLines, splitIntoLines, trimLines } from '../string-utils';
 import { useDebouncedCallback } from 'use-debounce';
 
 type ParsingTextAreaProps = {
@@ -13,6 +13,7 @@ const parseInput = pipe(
 	splitIntoLines,
 	trimLines,
 	filterEmptyLines,
+	deduplicateLines
 );
 
 const ParsingTextArea: React.FC<ParsingTextAreaProps> = ({ onChange, placeholder }) => {

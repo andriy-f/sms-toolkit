@@ -1,5 +1,6 @@
-import ParsingComponent from "@/features/Parsing";
+import ImportPhonesComponent from "@/features/ImportPhonesComponent";
 import Image from "next/image";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -51,7 +52,11 @@ export default function Home() {
             Read our docs
           </a>
         </div>
-        <ParsingComponent />
+        <Suspense
+          fallback={<div className="text-sm text-gray-500">Loading...</div>}
+        >
+          <ImportPhonesComponent />
+        </Suspense>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a

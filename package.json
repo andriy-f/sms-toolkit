@@ -9,6 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@heroui/accordion": "^2.2.22",
+    "@heroui/autocomplete": "^2.3.27",
+    "@heroui/system": "^2.4.21",
+    "@heroui/theme": "^2.4.21",
+    "framer-motion": "^12.23.12",
     "libphonenumber-js": "^1.12.15",
     "next": "15.5.2",
     "ramda": "^0.31.3",

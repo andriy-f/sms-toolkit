@@ -31,7 +31,7 @@ const Wizard: React.FC = () => {
 				<ImportPhonesComponent onImport={handleImportComplete} />
 			)}
 			{step === 'parse-phones' && (
-				<ParsePhones rawPhones={importedPhones} />
+				<ParsePhones rawPhones={importedPhones} onAccept={() => { }} />
 			)}
 		</div>
 	);

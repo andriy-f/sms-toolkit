@@ -21,7 +21,7 @@ const ImportPhonesComponent = (props: ImportPhonesComponentProps) => {
 	}
 	return (
 		<div>
-			<H2>Parsing Text Area</H2>
+			<H2>Import</H2>
 			<MultilineInput
 				placeholder="Enter phone numbers, e.g., +1234567890"
 				onChange={handleChange}

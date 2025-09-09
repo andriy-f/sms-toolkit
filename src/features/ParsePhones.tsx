@@ -1,59 +1,56 @@
 import { useEffect, useState } from "react";
-import parsePhoneNumber, { CountryCode, getCountries, getCountryCallingCode } from 'libphonenumber-js/max';
+import { parsePhoneNumberWithError, CountryCode, ParseError } from 'libphonenumber-js/max';
 import { Accordion, AccordionItem } from "@heroui/accordion";
 
 import H2 from "@/shared/components/H2";
 import CountrySelect from "./phone-parsing/CountrySelect";
 import DefaultButton from "@/shared/components/DefaultButton";
+import { is } from "ramda";
+import { parse } from "path";
 
 type ParsePhonesProps = {
 	rawPhones: string[] | null;
 	onAccept: (correctPhones: string[]) => void;
 }
 
-type ParsedPhones = {
+type ParseResults = {
 	valid: string[]
 	invalid: string[]
-	possible: string[]
 	unparsable: string[]
 }
 const ParsePhones = ({ rawPhones, onAccept }: ParsePhonesProps) => {
 	const [defaultCountryCode, setDefaultCountryCode] = useState<CountryCode | null>(null);
-	const [parsedPhones, setParsedPhones] = useState<ParsedPhones | null>(null);
+	const [parsedPhones, setParsedPhones] = useState<ParseResults | null>(null);
 
 	useEffect(() => {
 		if (rawPhones && rawPhones.length > 0 && defaultCountryCode) {
-			const parsedPhones: ParsedPhones = {
+			const parseResults: ParseResults = {
 				valid: [],
 				invalid: [],
-				possible: [],
 				unparsable: []
 			}
 			rawPhones.forEach(phone => {
 				try {
-					const parsed = parsePhoneNumber(phone, { extract: true, defaultCountry: defaultCountryCode || undefined });
-					if (parsed) {
-						if (parsed.isValid()) {
-							parsedPhones.valid.push(parsed.number);
-						} else if (parsed.isPossible() && !parsed.isValid()) {
-							parsedPhones.possible.push(parsed.number);
-						} else if (!parsed.isPossible() && !parsed.isValid()) {
-							parsedPhones.invalid.push(parsed.number);
-						}
-
+					const parsed = parsePhoneNumberWithError(phone, { extract: true, defaultCountry: defaultCountryCode || undefined });
+					const isValid = parsed.isValid();
+					if (isValid) {
+						parseResults.valid.push(parsed.number);
 					} else {
-						// console.log(`Failed to parse phone: ${phone}`);
-						parsedPhones.unparsable.push(phone);
+						parseResults.invalid.push(parsed.number);
 					}
 				} catch (error) {
-					console.error(`Error parsing phone ${phone}:`, error);
+					if (error instanceof ParseError) {
+						console.debug(`Could not parse phone ${phone}:`, error);
+						parseResults.unparsable.push(phone);
+					} else {
+						console.error(`Unexpected error while parsing phone ${phone}:`, error);
+					}
 				}
 			});
-			const parsedPhonesUnique: ParsedPhones = {
-				valid: Array.from(new Set(parsedPhones.valid)),
-				invalid: Array.from(new Set(parsedPhones.invalid)),
-				possible: Array.from(new Set(parsedPhones.possible)),
-				unparsable: Array.from(new Set(parsedPhones.unparsable))
+			const parsedPhonesUnique: ParseResults = {
+				valid: Array.from(new Set(parseResults.valid)),
+				invalid: Array.from(new Set(parseResults.invalid)),
+				unparsable: Array.from(new Set(parseResults.unparsable))
 			}
 			setParsedPhones(parsedPhonesUnique);
 		}
@@ -68,22 +65,17 @@ const ParsePhones = ({ rawPhones, onAccept }: ParsePhonesProps) => {
 			<div>
 				{parsedPhones && <Accordion>
 					<AccordionItem key="1" aria-label="Valid" title="Valid">
-						{parsedPhones.valid.map((phone, index) => (
+						{parsedPhones.valid.map((phone) => (
 							<div key={phone}>{phone}</div>
 						))}
 					</AccordionItem>
-					<AccordionItem key="2" aria-label="Possible" title="Possible">
-						{parsedPhones.possible.map((phone, index) => (
+					<AccordionItem key="2" aria-label="Invalid" title="Invalid">
+						{parsedPhones.invalid.map((phone) => (
 							<div key={phone}>{phone}</div>
 						))}
 					</AccordionItem>
-					<AccordionItem key="3" aria-label="Invalid" title="Invalid">
-						{parsedPhones.invalid.map((phone, index) => (
-							<div key={phone}>{phone}</div>
-						))}
-					</AccordionItem>
-					<AccordionItem key="4" aria-label="Unparsable" title="Unparsable">
-						{parsedPhones.unparsable.map((phone, index) => (
+					<AccordionItem key="3" aria-label="Unparsable" title="Unparsable">
+						{parsedPhones.unparsable.map((phone) => (
 							<div key={phone}>{phone}</div>
 						))}
 					</AccordionItem>

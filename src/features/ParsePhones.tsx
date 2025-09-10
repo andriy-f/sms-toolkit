@@ -69,7 +69,9 @@ const ParsePhones = ({ rawPhones, onAccept }: ParsePhonesProps) => {
 							className="cursor-pointer flex gap-1 mb-4"
 							onClick={() => {
 								const textToCopy = parsedPhones.valid.join('\n');
-								copyToClipboard(textToCopy);
+								copyToClipboard(textToCopy).catch((err) => {
+									console.error('Failed to copy text to clipboard:', err);
+								});
 							}}
 						>
 							<ClipboardDocumentIcon className="h-5 w-5 inline" />

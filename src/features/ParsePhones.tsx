@@ -64,17 +64,17 @@ const ParsePhones = ({ rawPhones, onAccept }: ParsePhonesProps) => {
 			</div>
 			<div>
 				{parsedPhones && <Accordion>
-					<AccordionItem key="1" aria-label="Valid" title="Valid">
+					<AccordionItem key="1" aria-label="Valid" title={`Valid (${parsedPhones.valid.length})`}>
 						{parsedPhones.valid.map((phone) => (
 							<div key={phone}>{phone}</div>
 						))}
 					</AccordionItem>
-					<AccordionItem key="2" aria-label="Invalid" title="Invalid">
+					<AccordionItem key="2" aria-label="Invalid" title={`Invalid (${parsedPhones.invalid.length})`}>
 						{parsedPhones.invalid.map((phone) => (
 							<div key={phone}>{phone}</div>
 						))}
 					</AccordionItem>
-					<AccordionItem key="3" aria-label="Unparsable" title="Unparsable">
+					<AccordionItem key="3" aria-label="Unparsable" title={`Unparsable (${parsedPhones.unparsable.length})`}>
 						{parsedPhones.unparsable.map((phone) => (
 							<div key={phone}>{phone}</div>
 						))}

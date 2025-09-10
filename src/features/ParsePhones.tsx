@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { parsePhoneNumberWithError, CountryCode, ParseError } from 'libphonenumber-js/max';
 import { Accordion, AccordionItem } from "@heroui/accordion";
+import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
+import { copyToClipboard } from "@/features/utils/frontend-utils";
 
 import H2 from "@/shared/components/H2";
 import CountrySelect from "./phone-parsing/CountrySelect";
 import DefaultButton from "@/shared/components/DefaultButton";
-import { is } from "ramda";
-import { parse } from "path";
 
 type ParsePhonesProps = {
 	rawPhones: string[] | null;
@@ -65,6 +65,17 @@ const ParsePhones = ({ rawPhones, onAccept }: ParsePhonesProps) => {
 			<div>
 				{parsedPhones && <Accordion>
 					<AccordionItem key="1" aria-label="Valid" title={`Valid (${parsedPhones.valid.length})`}>
+						<button
+							className="cursor-pointer flex gap-1 mb-4"
+							onClick={() => {
+								const textToCopy = parsedPhones.valid.join('\n');
+								copyToClipboard(textToCopy);
+							}}
+						>
+							<ClipboardDocumentIcon className="h-5 w-5 inline" />
+							<span className="sr-only">Copy valid phones to clipboard</span>
+							<span className="underline">Copy valid</span>
+						</button>
 						{parsedPhones.valid.map((phone) => (
 							<div key={phone}>{phone}</div>
 						))}

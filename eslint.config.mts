@@ -10,16 +10,10 @@ const eslintConfig = defineConfig([
   eslint.configs.recommended,
   reactPlugin.configs.flat.recommended, // This is not a plugin object, but a shareable config object
   reactPlugin.configs.flat['jsx-runtime'], // Add this if you are using React 17+
-  {
-    settings: {
-      react: {
-        version: "detect",
-      },
-    }
-  },
   reactHooks.configs['recommended-latest'],
   tseslint.configs.recommendedTypeChecked,
-  // tseslint.configs.stylisticTypeChecked, // Some opinionated rules, but type-checked
+  tseslint.configs.stylisticTypeChecked, // Some opinionated rules, but type-checked
+  flatNextConfig.coreWebVitals as Linter.Config, // TODO remove as any after next-plugin-next is updated
   {
     languageOptions: {
       parserOptions: {
@@ -27,9 +21,6 @@ const eslintConfig = defineConfig([
         tsconfigRootDir: import.meta.dirname,
       },
     },
-  },
-  flatNextConfig.coreWebVitals as Linter.Config, // TODO remove as any after next-plugin-next is updated
-  {
     rules: {
       "@typescript-eslint/no-unused-vars": [
         "error",
@@ -39,7 +30,13 @@ const eslintConfig = defineConfig([
           caughtErrorsIgnorePattern: "^_",
           destructuredArrayIgnorePattern: "^_",
         },
-      ]
+      ],
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
     }
   },
   {

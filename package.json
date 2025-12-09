@@ -16,7 +16,7 @@
     "@heroui/theme": "^2.4.21",
     "framer-motion": "^12.23.12",
     "libphonenumber-js": "^1.12.15",
-    "next": "15.5.2",
+    "next": "15.5.7",
     "ramda": "^0.31.3",
     "react": "19.1.1",
     "react-dom": "19.1.1",

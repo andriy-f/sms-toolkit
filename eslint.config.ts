@@ -4,7 +4,7 @@ import eslint from '@eslint/js'
 import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import tseslint from 'typescript-eslint'
-import { flatConfig as flatNextConfig } from '@next/eslint-plugin-next'
+import flatNextConfig from '@next/eslint-plugin-next'
 
 const eslintConfig = defineConfig([
   eslint.configs.recommended,
@@ -13,7 +13,7 @@ const eslintConfig = defineConfig([
   reactHooks.configs['recommended-latest'],
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked, // Some opinionated rules, but type-checked
-  flatNextConfig.coreWebVitals as Linter.Config, // TODO remove as any after next-plugin-next is updated
+  flatNextConfig.configs["core-web-vitals"], // TODO remove as any after next-plugin-next is updated
   {
     languageOptions: {
       parserOptions: {
@@ -35,7 +35,7 @@ const eslintConfig = defineConfig([
     },
     settings: {
       react: {
-        version: "detect",
+        version: "19",
       },
     }
   },
@@ -46,8 +46,9 @@ const eslintConfig = defineConfig([
       "out/**",
       "build/**",
       ".pnpm-store/**",
+      "next.config.ts",
       "next-env.d.ts",
-      "eslint.config.mts",
+      "eslint.config.ts",
       "postcss.config.mjs",
     ],
   },

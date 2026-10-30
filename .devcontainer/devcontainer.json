@@ -5,8 +5,10 @@
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"dockerFile": "./Dockerfile",
 	"runArgs": [
-		"--userns=keep-id:uid=1000,gid=1000"
+		"--userns=keep-id",
+		"--security-opt=label=disable",
 	],
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached,relabel=shared",
 	// Create folder on your local system for pnpm store and set env var $MY_PNPM_STORE_PATH to that folder's path
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
